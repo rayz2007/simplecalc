@@ -10,10 +10,13 @@ import Foundation
 
 public class Calculator {
     public func calculate(_ args: [String]) -> Int {
-        if (args.contains("count")) {
+        let operate = getOperator(args) // Get Operator
+        switch operate {
+        case "count":
             return (args.count - 1)
-        } else if (args.contains("avg")) {
-            if (args.count == 1) {
+        
+        case "avg":
+            if (args.count < 2) {
                 return 0
             }
             var sum = 0;
@@ -22,8 +25,9 @@ public class Calculator {
                 sum += int1
             }
             return (sum / (args.count - 1))
-        } else if (args.contains("fact")) {
-            if (args.count == 1) {
+        
+        case "fact":
+            if (args.count < 2) {
                 return 0
             }
             var total = 1;
@@ -32,26 +36,48 @@ public class Calculator {
                 total *= i
             }
             return total
-        } else {
+        
+        case "+":
             let firstNum:Int! = Int(args[0])
             let nextNum:Int! = Int(args[2])
-            let operate = args[1]
-            if (operate == "+") {
-                return (firstNum + nextNum)
-            } else if (operate == "-") {
-                return (firstNum - nextNum)
-            } else if (operate == "*") {
-                return (firstNum * nextNum)
-            } else if (operate == "/") {
-                return (firstNum / nextNum)
-            } else {
-                return (firstNum % nextNum)
-            }
+            return firstNum + nextNum
+        
+        case "-":
+            let firstNum:Int! = Int(args[0])
+            let nextNum:Int! = Int(args[2])
+            return firstNum - nextNum
+        
+        case "*":
+            let firstNum:Int! = Int(args[0])
+            let nextNum:Int! = Int(args[2])
+            return firstNum * nextNum
+        
+        case "/":
+            let firstNum:Int! = Int(args[0])
+            let nextNum:Int! = Int(args[2])
+            return firstNum / nextNum
+        
+        case "%":
+            let firstNum:Int! = Int(args[0])
+            let nextNum:Int! = Int(args[2])
+            return firstNum % nextNum
+
+        default:
+            return 0
         }
     }
     
     public func calculate(_ arg: String) -> Int {
         return calculate( arg.split(separator: " ").map({ substr in String(substr) }) )
+    }
+    
+    // Get operator
+    private func getOperator(_ args: [String]) -> String {
+        if (args[args.count - 1].count > 1) {
+            return args[args.count - 1]
+        } else {
+            return args[args.count - 2]
+        }
     }
 }
 
